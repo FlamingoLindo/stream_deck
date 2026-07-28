@@ -1,0 +1,16 @@
+import { VerticalBox, Button } from "std-widgets.slint";
+
+export component SecondPage {
+    callback back();
+
+    VerticalBox {
+        Text {
+            text: "Second Page";
+        }
+
+        Button {
+            text: "Back";
+            clicked => { root.back(); }
+        }
+    }
+}

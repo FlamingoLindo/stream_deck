@@ -1,0 +1,29 @@
+import { VerticalBox, Button } from "std-widgets.slint";
+
+export component HomePage {
+    callback next_screen();
+
+    in property <string> current-time: "--:--:--";
+
+    TouchArea {
+        width: 100%;
+        height: 100%;
+        clicked => { root.next_screen(); }
+
+        Image {
+            Text {
+                text: root.current-time;
+                font-size: 65pt;
+                horizontal-alignment: center;
+                stroke: black;
+                stroke-width: 3px;
+                stroke-style: center;
+            }
+
+            width: 100%;
+            height: 100%;
+            image-fit: fill;
+            source: @image-url("../../assets/test.png");
+        }
+    }
+}
