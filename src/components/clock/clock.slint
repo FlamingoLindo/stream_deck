@@ -1,0 +1,12 @@
+export component Clock {
+    in property <string> current-time;
+
+    Text {
+        text: root.current-time;
+        font-size: 70pt;
+        horizontal-alignment: center;
+        stroke: black;
+        stroke-width: 3px;
+        stroke-style: center;
+    }
+}

@@ -6,15 +6,34 @@ export component MainWindow inherits Window {
     preferred-width: 320px;
     preferred-height: 240px;
 
-    property <int> current_page: 0;
+    property <int> current-page: 0;
+    in property <string> current-time;
 
-    if root.current_page == 0: HomePage {
+    Rectangle {
+        clip: true;
         width: 100%;
         height: 100%;
-        next_screen => { root.current_page = 1; }
-    }
 
-    if root.current_page == 1: SecondPage {
-        back => { root.current_page = 0; }
+        VerticalLayout {
+            y: root.current-page == 0 ? 0 : -root.height;
+
+            animate y {
+                duration: 250ms;
+                easing: ease-in-out;
+            }
+
+            HomePage {
+                width: root.width;
+                height: root.height;
+                current-time: root.current-time;
+                next_screen => { root.current-page = 1; }
+            }
+
+            SecondPage {
+                width: root.width;
+                height: root.height;
+                back => { root.current-page = 0; }
+            }
+        }
     }
 }
