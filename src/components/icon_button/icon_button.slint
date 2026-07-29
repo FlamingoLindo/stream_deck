@@ -1,0 +1,25 @@
+import { Button } from "std-widgets.slint";
+
+export component IconButton {
+    callback clicked();
+    in property <image> icon;
+    in property <color> icon-color: black;
+    in property <length> icon-size: 24px;
+
+    TouchArea {
+        clicked => { root.clicked() }
+
+        Rectangle {
+            border-radius: 4px;
+            border-color: white;
+            background: parent.has-hover ? #2e2e2e : #292929;
+
+            Image {
+                source: root.icon;
+                colorize: root.icon-color;
+                width: root.icon-size;
+                height: root.icon-size;
+            }
+        }
+    }
+}

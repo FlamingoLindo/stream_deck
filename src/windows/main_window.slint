@@ -1,5 +1,5 @@
-import { HomePage } from "../components/home_page.slint";
-import { SecondPage } from "../components/second_page.slint";
+import { HomePage } from "../pages/home_page.slint";
+import { SecondPage } from "../pages//second_page.slint";
 
 export component MainWindow inherits Window {
     title: "Stream Deck";
@@ -8,6 +8,7 @@ export component MainWindow inherits Window {
 
     property <int> current-page: 0;
     in property <string> current-time;
+    callback key-pressed(int);
 
     Rectangle {
         clip: true;
@@ -33,6 +34,7 @@ export component MainWindow inherits Window {
                 width: root.width;
                 height: root.height;
                 back => { root.current-page = 0; }
+                key-pressed(id) => { root.key-pressed(id); }
             }
         }
     }
