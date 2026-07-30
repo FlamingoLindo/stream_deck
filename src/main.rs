@@ -36,16 +36,11 @@ fn main() {
         })
         .collect();
 
-    let rows: Vec<ModelRc<ButtonData>> = button_data
-        .chunks(3)
-        .map(|chunk| ModelRc::new(VecModel::from(chunk.to_vec())))
-        .collect();
-
-    let rows_model = ModelRc::new(VecModel::from(rows));
+    let buttons_model = ModelRc::new(VecModel::from(button_data));
 
     let window = MainWindow::new().unwrap();
 
-    window.set_rows(rows_model);
+    window.set_buttons(buttons_model);
 
     let weak = window.as_weak();
 
@@ -85,6 +80,11 @@ fn main() {
                 "back" => {
                     if let Some(window) = weak.upgrade() {
                         window.set_current_page(0);
+                    }
+                }
+                "add" => {
+                    if let Some(window) = weak.upgrade() {
+                        window.set_current_page(2);
                     }
                 }
                 other => eprintln!("unknown nav target: {other}"),

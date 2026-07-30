@@ -60,7 +60,7 @@ impl Default for DeckSettings {
                         color: "#4287f5".to_string(),
                         action: BtnAction {
                             btn_type: BtnType::Nav,
-                            value: "back".to_string(),
+                            value: "add".to_string(),
                         },
                     },
                 ],

@@ -9,13 +9,14 @@ export component MainWindow inherits Window {
 
     in-out property <int> current-page: 0;
     in property <string> current-time;
-    in property <[[ButtonData]]> rows;
+    in property <[ButtonData]> buttons;
     callback key-pressed(int);
 
     Rectangle {
         clip: true;
         width: 100%;
         height: 100%;
+        background: #1d1d1d;
 
         VerticalLayout {
             y: root.current-page == 0 ? 0 : -root.height;
@@ -35,7 +36,7 @@ export component MainWindow inherits Window {
             SecondPage {
                 width: root.width;
                 height: root.height;
-                rows: root.rows;
+                buttons: root.buttons;
                 back => { root.current-page = 0; }
                 key-pressed(id) => { root.key-pressed(id); }
             }

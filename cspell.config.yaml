@@ -6,6 +6,7 @@ ignorePaths:
 dictionaryDefinitions: []
 dictionaries: []
 words:
+  - Flickable
   - KEYBD
   - KEYBDINPUT
   - KEYEVENTF_KEYUP

@@ -1,69 +1,40 @@
-import { VerticalBox, Button } from "std-widgets.slint";
-import { IconButton } from "../components/icon_button/icon_button.slint";
-import { ButtonData } from "../components/icon_button/icon_button.slint";
+import {
+    IconButton,
+    ButtonData,
+} from "../components/icon_button/icon_button.slint";
 
 export component SecondPage {
     callback back();
     callback key-pressed(int);
 
-    in property <[[ButtonData]]> rows;
+    in property <[ButtonData]> buttons;
 
-    GridLayout {
-        padding: 5px;
-        spacing: 2px;
-        for row[r] in root.rows: HorizontalLayout {
-            spacing: 2px;
-            for btn[c] in row: IconButton {
-                icon: btn.image;
-                icon-color: btn.color;
-                icon-size: 32px;
-                clicked => { root.key-pressed(r * 3 + c) }
+    property <length> button-width: 150px;
+    property <length> button-height: 130px;
+    property <length> spacing: 5px;
+
+    VerticalLayout {
+        alignment: center;
+
+        Flickable {
+            height: root.button-height + 10px;
+            width: 100%;
+            viewport-width: root.buttons.length * (root.button-width + root.spacing) + 5px;
+
+            HorizontalLayout {
+                padding: 5px;
+                spacing: root.spacing;
+                alignment: center;
+
+                for btn[i] in root.buttons: IconButton {
+                    icon: btn.image;
+                    icon-color: btn.color;
+                    icon-size: 32px;
+                    button-width: root.button-width;
+                    button-height: root.button-height;
+                    clicked => { root.key-pressed(i) }
+                }
             }
         }
-        // Row {
-        //     IconButton {
-        //         icon: @image-url("../../assets/uil--clock.svg");
-        //         icon-color: #4287f5;
-        //         icon-size: 32px;
-        //         clicked => { root.back() }
-        //     }
-
-        //     IconButton {
-        //         icon: @image-url("../../assets/ic--baseline-plus.svg");
-        //         icon-color: #4287f5;
-        //         icon-size: 32px;
-        //         clicked => { root.key-pressed(2); }
-        //     }
-
-        //     IconButton {
-        //         icon: @image-url("../../assets/material-symbols--skip-next.svg");
-        //         icon-color: #4287f5;
-        //         icon-size: 32px;
-        //         clicked => { root.key-pressed(3); }
-        //     }
-        // }
-
-        // Row {
-        //     IconButton {
-        //         icon: @image-url("../../assets/mdi-light--image.svg");
-        //         icon-color: #4287f5;
-        //         icon-size: 32px;
-        //         clicked => { root.key-pressed(4); }
-        //     }
-
-        //     IconButton {
-        //         icon: @image-url("../../assets/icon-park-outline--change.svg");
-        //         icon-color: #4287f5;
-        //         icon-size: 32px;
-        //         clicked => { root.key-pressed(5); }
-        //     }
-
-        //     IconButton {
-        //         icon: @image-url("../../assets/ion--bulb-outline.svg");
-        //         icon-color: #4287f5;
-        //         icon-size: 32px;
-        //         clicked => { root.key-pressed(6); }
-        //     }
-        // }
     }
 }
