@@ -1,5 +1,10 @@
 import { Button } from "std-widgets.slint";
 
+export struct ButtonData {
+    image: image,
+    color: color,
+}
+
 export component IconButton {
     callback clicked();
     in property <image> icon;

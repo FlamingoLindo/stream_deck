@@ -1,13 +1,15 @@
 import { HomePage } from "../pages/home_page.slint";
 import { SecondPage } from "../pages//second_page.slint";
+import { ButtonData } from "../components/icon_button/icon_button.slint";
 
 export component MainWindow inherits Window {
     title: "Stream Deck";
     preferred-width: 320px;
     preferred-height: 240px;
 
-    property <int> current-page: 0;
+    in-out property <int> current-page: 0;
     in property <string> current-time;
+    in property <[[ButtonData]]> rows;
     callback key-pressed(int);
 
     Rectangle {
@@ -33,6 +35,7 @@ export component MainWindow inherits Window {
             SecondPage {
                 width: root.width;
                 height: root.height;
+                rows: root.rows;
                 back => { root.current-page = 0; }
                 key-pressed(id) => { root.key-pressed(id); }
             }

@@ -1,8 +1,14 @@
 version: "0.2"
-ignorePaths: [.gitignore, Cargo.toml, Cargo.lock]
+ignorePaths:
+  - .gitignore
+  - Cargo.toml
+  - Cargo.lock
 dictionaryDefinitions: []
 dictionaries: []
 words:
+  - KEYBD
+  - KEYBDINPUT
+  - KEYEVENTF_KEYUP
   - slint
 ignoreWords: []
 import: []

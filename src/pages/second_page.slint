@@ -1,57 +1,69 @@
 import { VerticalBox, Button } from "std-widgets.slint";
 import { IconButton } from "../components/icon_button/icon_button.slint";
+import { ButtonData } from "../components/icon_button/icon_button.slint";
 
 export component SecondPage {
     callback back();
     callback key-pressed(int);
 
+    in property <[[ButtonData]]> rows;
+
     GridLayout {
         padding: 5px;
         spacing: 2px;
-        Row {
-            IconButton {
-                icon: @image-url("../../assets/uil--clock.svg");
-                icon-color: #4287f5;
+        for row[r] in root.rows: HorizontalLayout {
+            spacing: 2px;
+            for btn[c] in row: IconButton {
+                icon: btn.image;
+                icon-color: btn.color;
                 icon-size: 32px;
-                clicked => { root.back() }
-            }
-
-            IconButton {
-                icon: @image-url("../../assets/ic--baseline-plus.svg");
-                icon-color: #4287f5;
-                icon-size: 32px;
-                clicked => { root.key-pressed(2); }
-            }
-
-            IconButton {
-                icon: @image-url("../../assets/material-symbols--skip-next.svg");
-                icon-color: #4287f5;
-                icon-size: 32px;
-                clicked => { root.key-pressed(3); }
+                clicked => { root.key-pressed(r * 3 + c) }
             }
         }
+        // Row {
+        //     IconButton {
+        //         icon: @image-url("../../assets/uil--clock.svg");
+        //         icon-color: #4287f5;
+        //         icon-size: 32px;
+        //         clicked => { root.back() }
+        //     }
 
-        Row {
-            IconButton {
-                icon: @image-url("../../assets/mdi-light--image.svg");
-                icon-color: #4287f5;
-                icon-size: 32px;
-                clicked => { root.key-pressed(4); }
-            }
+        //     IconButton {
+        //         icon: @image-url("../../assets/ic--baseline-plus.svg");
+        //         icon-color: #4287f5;
+        //         icon-size: 32px;
+        //         clicked => { root.key-pressed(2); }
+        //     }
 
-            IconButton {
-                icon: @image-url("../../assets/icon-park-outline--change.svg");
-                icon-color: #4287f5;
-                icon-size: 32px;
-                clicked => { root.key-pressed(5); }
-            }
+        //     IconButton {
+        //         icon: @image-url("../../assets/material-symbols--skip-next.svg");
+        //         icon-color: #4287f5;
+        //         icon-size: 32px;
+        //         clicked => { root.key-pressed(3); }
+        //     }
+        // }
 
-            IconButton {
-                icon: @image-url("../../assets/ion--bulb-outline.svg");
-                icon-color: #4287f5;
-                icon-size: 32px;
-                clicked => { root.key-pressed(6); }
-            }
-        }
+        // Row {
+        //     IconButton {
+        //         icon: @image-url("../../assets/mdi-light--image.svg");
+        //         icon-color: #4287f5;
+        //         icon-size: 32px;
+        //         clicked => { root.key-pressed(4); }
+        //     }
+
+        //     IconButton {
+        //         icon: @image-url("../../assets/icon-park-outline--change.svg");
+        //         icon-color: #4287f5;
+        //         icon-size: 32px;
+        //         clicked => { root.key-pressed(5); }
+        //     }
+
+        //     IconButton {
+        //         icon: @image-url("../../assets/ion--bulb-outline.svg");
+        //         icon-color: #4287f5;
+        //         icon-size: 32px;
+        //         clicked => { root.key-pressed(6); }
+        //     }
+        // }
     }
 }
