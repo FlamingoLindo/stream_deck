@@ -47,7 +47,7 @@ impl Default for DeckSettings {
                 buttons: vec![
                     TabBtn {
                         id: 0,
-                        image: "assets/uil--clock.svg".to_string(),
+                        image: "assets/icons/uil--clock.svg".to_string(),
                         color: "#4287f5".to_string(),
                         action: BtnAction {
                             btn_type: BtnType::Nav,
@@ -56,7 +56,7 @@ impl Default for DeckSettings {
                     },
                     TabBtn {
                         id: 1,
-                        image: "assets/ic--baseline-plus.svg".to_string(),
+                        image: "assets/icons/ic--baseline-plus.svg".to_string(),
                         color: "#4287f5".to_string(),
                         action: BtnAction {
                             btn_type: BtnType::Nav,

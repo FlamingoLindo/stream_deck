@@ -1,0 +1,42 @@
+import { GoBack } from "../components/go_back/go_back.slint";
+import { IconButton } from "../components/icon_button/icon_button.slint";
+
+export component AddPage {
+    callback go-back();
+    callback icon-selected(int);
+    in property <[image]> icons;
+
+    property <int> columns: 6;
+
+    VerticalLayout {
+        padding: 10px;
+        spacing: 8px;
+
+        HorizontalLayout {
+            height: 25px;
+
+            GoBack {
+                clicked => { root.go-back() }
+            }
+        }
+
+        Text {
+            text: "Icons:";
+        }
+
+        GridLayout {
+            spacing: 4px;
+
+            for icon[i] in root.icons: IconButton {
+                row: i / root.columns;
+                col: mod(i, root.columns);
+                icon: icon;
+                icon-color: #4287f5;
+                icon-size: 20px;
+                button-width: 45px;
+                button-height: 45px;
+                clicked => { root.icon-selected(i) }
+            }
+        }
+    }
+}

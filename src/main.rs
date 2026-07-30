@@ -1,8 +1,10 @@
+use crate::{
+    components::icon_button::get_all_icons::get_icons_paths,
+    settings::load::{BtnAction, BtnType, load_settings},
+};
 use slint::{Color, Image, ModelRc, Timer, TimerMode, VecModel};
 use std::time::Duration;
 use windows::Win32::UI::Input::KeyboardAndMouse::{VK_F13, VK_F14, VK_F15, VK_F16, VK_F17};
-
-use crate::settings::load::{BtnAction, BtnType, load_settings};
 
 pub mod components;
 pub mod settings;
@@ -19,6 +21,7 @@ slint::include_modules!();
 
 fn main() {
     let deck_settings = load_settings();
+    let icons = get_icons_paths();
 
     let tab = deck_settings
         .tabs
@@ -38,9 +41,22 @@ fn main() {
 
     let buttons_model = ModelRc::new(VecModel::from(button_data));
 
-    let window = MainWindow::new().unwrap();
+    let icon_images: Vec<Image> = icons
+        .iter()
+        .filter_map(|path| match Image::load_from_path(path) {
+            Ok(img) => Some(img),
+            Err(e) => {
+                eprintln!("failed to load icon {path:?}: {e}");
+                None
+            }
+        })
+        .collect();
 
+    let icons_model = ModelRc::new(VecModel::from(icon_images));
+
+    let window = MainWindow::new().unwrap();
     window.set_buttons(buttons_model);
+    window.set_icons(icons_model);
 
     let weak = window.as_weak();
 

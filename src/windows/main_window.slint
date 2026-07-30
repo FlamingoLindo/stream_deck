@@ -1,6 +1,7 @@
 import { HomePage } from "../pages/home_page.slint";
 import { SecondPage } from "../pages//second_page.slint";
 import { ButtonData } from "../components/icon_button/icon_button.slint";
+import { AddPage } from "../pages/add_page.slint";
 
 export component MainWindow inherits Window {
     title: "Stream Deck";
@@ -10,6 +11,7 @@ export component MainWindow inherits Window {
     in-out property <int> current-page: 0;
     in property <string> current-time;
     in property <[ButtonData]> buttons;
+    in property <[image]> icons;
     callback key-pressed(int);
 
     Rectangle {
@@ -19,7 +21,7 @@ export component MainWindow inherits Window {
         background: #1d1d1d;
 
         VerticalLayout {
-            y: root.current-page == 0 ? 0 : -root.height;
+            y: -root.current-page * root.height;
 
             animate y {
                 duration: 250ms;
@@ -30,7 +32,7 @@ export component MainWindow inherits Window {
                 width: root.width;
                 height: root.height;
                 current-time: root.current-time;
-                next_screen => { root.current-page = 1; }
+                next_screen => { root.current-page = 1 }
             }
 
             SecondPage {
@@ -38,7 +40,14 @@ export component MainWindow inherits Window {
                 height: root.height;
                 buttons: root.buttons;
                 back => { root.current-page = 0; }
-                key-pressed(id) => { root.key-pressed(id); }
+                key-pressed(id) => { root.key-pressed(id) }
+            }
+
+            AddPage {
+                width: root.width;
+                height: root.height;
+                icons: root.icons;
+                go-back => { root.current-page = 1 }
             }
         }
     }
