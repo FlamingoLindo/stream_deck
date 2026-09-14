@@ -13,6 +13,7 @@ export component MainWindow inherits Window {
     in property <[ButtonData]> buttons;
     in property <[image]> icons;
     callback key-pressed(int);
+    callback icon-selected(int);
 
     Rectangle {
         clip: true;
@@ -48,6 +49,7 @@ export component MainWindow inherits Window {
                 height: root.height;
                 icons: root.icons;
                 go-back => { root.current-page = 1 }
+                icon-selected(i) => { root.icon-selected(i) }
             }
         }
     }

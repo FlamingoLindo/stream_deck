@@ -13,7 +13,7 @@ pub struct Tab {
     pub buttons: Vec<TabBtn>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct TabBtn {
     pub id: i8,
     pub image: String,
@@ -74,15 +74,35 @@ impl Default for DeckSettings {
     }
 }
 
-pub fn load_settings() -> DeckSettings {
-    if !fs::exists("settings.toml").unwrap_or(false) {
+impl DeckSettings {
+    pub fn create_default() -> DeckSettings {
         let default_settings = DeckSettings::default();
         let toml_string = toml::to_string_pretty(&default_settings)
             .expect("failed to serialize default settings");
         fs::write("settings.toml", toml_string).expect("failed to write settings.toml");
         default_settings
-    } else {
-        let contents = fs::read_to_string("settings.toml").expect("failed to read settings.toml");
-        toml::from_str(&contents).expect("failed to parse settings.toml")
+    }
+
+    pub fn load_settings() -> DeckSettings {
+        if !fs::exists("settings.toml").unwrap_or(false) {
+            Self::create_default()
+        } else {
+            let contents =
+                fs::read_to_string("settings.toml").expect("failed to read settings.toml");
+            toml::from_str(&contents).expect("failed to parse settings.toml")
+        }
+    }
+
+    pub fn add_btn(&mut self, tab_name: &str, button: TabBtn) {
+        self.tabs
+            .entry(tab_name.to_string())
+            .or_insert_with(|| Tab {
+                buttons: Vec::new(),
+            })
+            .buttons
+            .push(button);
+
+        let toml_string = toml::to_string_pretty(self).expect("failed to serialize settings");
+        fs::write("settings.toml", toml_string).expect("failed to write settings.toml");
     }
 }

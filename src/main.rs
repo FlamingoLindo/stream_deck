@@ -1,12 +1,15 @@
 use crate::{
     components::icon_button::get_all_icons::get_icons_paths,
-    settings::load::{BtnAction, BtnType, load_settings},
+    settings::settings::{BtnAction, BtnType, DeckSettings},
 };
 use slint::{Color, Image, ModelRc, Timer, TimerMode, VecModel};
+use std::cell::RefCell;
+use std::rc::Rc;
 use std::time::Duration;
 use windows::Win32::UI::Input::KeyboardAndMouse::{VK_F13, VK_F14, VK_F15, VK_F16, VK_F17};
 
 pub mod components;
+pub mod handler;
 pub mod settings;
 
 fn parse_hex_color(hex: &str) -> Color {
@@ -20,26 +23,34 @@ fn parse_hex_color(hex: &str) -> Color {
 slint::include_modules!();
 
 fn main() {
-    let deck_settings = load_settings();
+    let deck_settings = Rc::new(RefCell::new(DeckSettings::load_settings()));
     let icons = get_icons_paths();
 
-    let tab = deck_settings
-        .tabs
-        .get("tab1")
-        .expect("tab1 not found in settings");
+    let (actions, button_data) = {
+        let settings = deck_settings.borrow();
+        let tab = settings
+            .tabs
+            .get("tab1")
+            .expect("tab1 not found in settings");
 
-    let actions: Vec<BtnAction> = tab.buttons.iter().map(|b| b.action.clone()).collect();
+        let actions: Vec<BtnAction> = tab.buttons.iter().map(|b| b.action.clone()).collect();
 
-    let button_data: Vec<ButtonData> = tab
-        .buttons
-        .iter()
-        .map(|b| ButtonData {
-            image: Image::load_from_path(std::path::Path::new(&b.image)).unwrap_or_default(),
-            color: parse_hex_color(&b.color),
-        })
-        .collect();
+        let button_data: Vec<ButtonData> = tab
+            .buttons
+            .iter()
+            .map(|b| ButtonData {
+                image: Image::load_from_path(std::path::Path::new(&b.image)).unwrap_or_default(),
+                color: parse_hex_color(&b.color),
+            })
+            .collect();
 
-    let buttons_model = ModelRc::new(VecModel::from(button_data));
+        (actions, button_data)
+    };
+
+    let actions = Rc::new(RefCell::new(actions));
+
+    let buttons_vec_model = Rc::new(VecModel::from(button_data));
+    let buttons_model = ModelRc::from(buttons_vec_model.clone());
 
     let icon_images: Vec<Image> = icons
         .iter()
@@ -68,7 +79,10 @@ fn main() {
         }
     });
 
+    let actions_for_key = actions.clone();
+    let weak_for_key = weak.clone();
     window.on_key_pressed(move |id| {
+        let actions = actions_for_key.borrow();
         let action = match actions.get(id as usize) {
             Some(a) => a,
             None => {
@@ -94,17 +108,38 @@ fn main() {
             }
             BtnType::Nav => match action.value.as_str() {
                 "back" => {
-                    if let Some(window) = weak.upgrade() {
+                    if let Some(window) = weak_for_key.upgrade() {
                         window.set_current_page(0);
                     }
                 }
                 "add" => {
-                    if let Some(window) = weak.upgrade() {
+                    if let Some(window) = weak_for_key.upgrade() {
                         window.set_current_page(2);
                     }
                 }
                 other => eprintln!("unknown nav target: {other}"),
             },
+        }
+    });
+
+    let deck_settings_for_add = deck_settings.clone();
+    let icons_for_add = icons.clone();
+    let actions_for_add = actions.clone();
+    let weak_for_add = weak.clone();
+
+    window.on_icon_selected(move |i| {
+        if handler::handle_icon_selected(
+            i,
+            &icons_for_add,
+            &deck_settings_for_add,
+            &actions_for_add,
+            &buttons_vec_model,
+        )
+        .is_some()
+        {
+            if let Some(window) = weak_for_add.upgrade() {
+                window.set_current_page(1);
+            }
         }
     });
 
