@@ -1,0 +1,55 @@
+version = "0.1.0"
+
+[[tab1.buttons]]
+id = 0
+image = "assets/icons/uil--clock.svg"
+color = "#4287f5"
+
+[tab1.buttons.action]
+btn_type = "Nav"
+value = "back"
+
+[[tab1.buttons]]
+id = 1
+image = "assets/icons/ic--baseline-plus.svg"
+color = "#4287f5"
+
+[tab1.buttons.action]
+btn_type = "Nav"
+value = "add"
+
+[[tab1.buttons]]
+id = 2
+image = './assets/icons\ion--bulb-outline.svg'
+color = "#4287f5"
+
+[tab1.buttons.action]
+btn_type = "Key"
+value = "F13"
+
+[[tab1.buttons]]
+id = 3
+image = './assets/icons\icon-park-outline--change.svg'
+color = "#4287f5"
+
+[tab1.buttons.action]
+btn_type = "Key"
+value = "F13"
+
+[[tab1.buttons]]
+id = 4
+image = './assets/icons\material-symbols--skip-next.svg'
+color = "#4287f5"
+
+[tab1.buttons.action]
+btn_type = "Key"
+value = "F13"
+
+[[tab1.buttons]]
+id = 5
+image = './assets/icons\uil--clock.svg'
+color = "#4287f5"
+
+[tab1.buttons.action]
+btn_type = "Key"
+value = "F13"
