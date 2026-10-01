@@ -1,0 +1,40 @@
+import {
+    IconButton,
+    ButtonData,
+} from "../components/icon_button/icon_button.slint";
+
+export component SecondPage {
+    callback back();
+    callback key-pressed(int);
+
+    in property <[ButtonData]> buttons;
+
+    property <length> button-width: 150px;
+    property <length> button-height: 130px;
+    property <length> spacing: 5px;
+
+    VerticalLayout {
+        alignment: center;
+
+        Flickable {
+            height: root.button-height + 10px;
+            width: 100%;
+            viewport-width: root.buttons.length * (root.button-width + root.spacing) + 5px;
+
+            HorizontalLayout {
+                padding: 5px;
+                spacing: root.spacing;
+                alignment: center;
+
+                for btn[i] in root.buttons: IconButton {
+                    icon: btn.image;
+                    icon-color: btn.color;
+                    icon-size: 32px;
+                    button-width: root.button-width;
+                    button-height: root.button-height;
+                    clicked => { root.key-pressed(i) }
+                }
+            }
+        }
+    }
+}
